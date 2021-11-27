@@ -10,7 +10,6 @@ list_average_flow = [] #přednastavení listu pro uchování průměrných průt
 eve_list = []
 unique_year = []
 year_flow = []
-pocet_radku = 0
 temp_year = []
 
 def average(flow_average): #funkce pocitajici aritmeticky prumer
@@ -24,7 +23,7 @@ def calc_average_flow_seven(): #funkce vypočítá průměrný průtok za sedmid
             flow_average = []
             try:
                 for z in range (7):
-                    o = sum([flow[7*i+z]])
+                    o = flow[7*i+z]
                     flow_average.append(o)
             except IndexError:
                 pass
@@ -36,7 +35,7 @@ def calc_average_flow_seven(): #funkce vypočítá průměrný průtok za sedmid
             flow_average = []
             try:
                 for z in range (7):
-                    o = sum([flow[7*i+z]])
+                    o = flow[7*i+z]
                     flow_average.append(o)
             except IndexError:
                 pass
@@ -44,7 +43,7 @@ def calc_average_flow_seven(): #funkce vypočítá průměrný průtok za sedmid
             list_average_flow.append(y)
         return list_average_flow
 def get_list(load_list,col_num): #rozřadí všechna data do příslušných seznamů
-    for i in range(pocet_radku):
+    for i in range(len(eve_list)):
         load_list.append(eve_list[i][col_num])
     return load_list
 def print_max(): #zjistí a vypíše minimální a maximální průtok
@@ -59,7 +58,6 @@ with open("vstup.csv", encoding = "UTF-8") as csvinfile:
     reader = csv.reader(csvinfile, delimiter = ",")
     for row in reader: #vytvoří seznam seznamů všech dat
         eve_list.append(row)
-        pocet_radku += 1
 
 #rozžazení dat do seznamů
 flow = get_list(flow,5)
@@ -98,7 +96,7 @@ with open("vystup_7dni.csv", "w", encoding = "UTF-8", newline='') as csvoutfile:
     for i in range(0,len(database_num),7):
         writer.writerow((database_num[i],data_type[i], year[i],month[i],day[i],"{:.4f}".format(round(list_average_flow[i//7],4))))
 
-with open("vystup_rocni.csv", "w", encoding = "UTF-8", newline='') as csvoutfile:
+with open("vystup_rocni.csv", "w", encoding = "UTF-8", newline='') as csvoutfile: #vytvoreni rocniho csv
     writer = csv.writer(csvoutfile)
     for i in range(len(unique_year)):
         writer.writerow((database_num[i],data_type[i], unique_year[i],"{:.4f}".format(round(year_flow[i],4))))
