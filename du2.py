@@ -55,7 +55,7 @@ def print_max(): #zjistí a vypíše minimální a maximální průtok
     print(f"Největší průtok byl {max_value} dne {day[max_index]}. {month[max_index]}. {year[max_index]}")
     print(f"Nejmenší průtok byl {min_value} dne {day[min_index]}. {month[min_index]}. {year[min_index]}")
 
-with open("test_data.csv", encoding = "UTF-8") as csvinfile:
+with open("vstup.csv", encoding = "UTF-8") as csvinfile:
     reader = csv.reader(csvinfile, delimiter = ",")
     for row in reader: #vytvoří seznam seznamů všech dat
         eve_list.append(row)
@@ -79,11 +79,12 @@ except ValueError:
 calc_average_flow_seven()
 print_max()
 
-for i in year:
+for i in year: #unikátní roky
     if i not in unique_year:
         unique_year.append(i)
+
 last = 0
-for i in range(len(unique_year)):
+for i in range(len(unique_year)): #spočítá roční průmery průtoku
     for z in range(last,len(year)):
         if year[z] == unique_year[i]:
             temp_year.append(flow[z])
@@ -91,4 +92,13 @@ for i in range(len(unique_year)):
             last = z
             break
     year_flow.append(average(temp_year))
-print(year_flow)
+
+with open("vystup_7dni.csv", "w", encoding = "UTF-8", newline='') as csvoutfile: #vytvoreni prvního csv
+    writer = csv.writer(csvoutfile)
+    for i in range(0,len(database_num),7):
+        writer.writerow((database_num[i],data_type[i], year[i],month[i],day[i],"{:.4f}".format(round(list_average_flow[i//7],4))))
+
+with open("vystup_rocni.csv", "w", encoding = "UTF-8", newline='') as csvoutfile:
+    writer = csv.writer(csvoutfile)
+    for i in range(len(unique_year)):
+        writer.writerow((database_num[i],data_type[i], unique_year[i],"{:.4f}".format(round(year_flow[i],4))))
