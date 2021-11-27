@@ -1,9 +1,10 @@
-
-list_average_flow = []
+import csv
+list_average_flow = [] #přednastavení listu pro uchování průměrných průtoků
 def average(flow_average): #funkce pocitajici aritmeticky prumer
     prumer = sum(flow_average)/len(flow_average)
     return prumer
-flow = [1,2,3,4,5,6,7,8]
+flow_not_stripped = []
+flow = []
 def calc_average_flow(): #funkce vypočítá průměrný průtok za sedmidenní období
     for i in range(2):
         flow_average = []
@@ -16,8 +17,13 @@ def calc_average_flow(): #funkce vypočítá průměrný průtok za sedmidenní 
             pass
         y = average(flow_average)
         list_average_flow.append(y)
-        print(list_average_flow)
     return list_average_flow
-calc_average_flow()
-print(list_average_flow)
 
+with open("test_data.csv", encoding = "UTF-8") as csvinfile:
+    reader = csv.reader(csvinfile, delimiter = ",")
+    for col in reader:
+        flow.append(col[5]) #uloží do seznamu prutoky
+     #prepise na hodnoty bez mezer
+    flow = list(map(float, flow)) #prevede
+print(flow)
+calc_average_flow()
