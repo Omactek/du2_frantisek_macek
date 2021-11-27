@@ -18,12 +18,17 @@ def calc_average_flow(): #funkce vypočítá průměrný průtok za sedmidenní 
         y = average(flow_average)
         list_average_flow.append(y)
     return list_average_flow
+def get_list(load_list,col_num):
+    for col in reader:
+        load_list.append(col[col_num])
+    return load_list
+
 
 with open("test_data.csv", encoding = "UTF-8") as csvinfile:
     reader = csv.reader(csvinfile, delimiter = ",")
     for col in reader:
         flow.append(col[5]) #uloží do seznamu prutoky
-     #prepise na hodnoty bez mezer
-    flow = list(map(float, flow)) #prevede
+    flow = list(map(str.strip,flow)) #prepise na hodnoty bez mezer !NENI MOZNA POTREBA!
+    flow = list(map(float, flow)) #prevede na float
 print(flow)
 calc_average_flow()
