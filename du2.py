@@ -7,6 +7,8 @@ month = []
 day = []
 flow = []
 list_average_flow = [] #přednastavení listu pro uchování průměrných průtoků
+eve_list = []
+pocet_radku = 0
 
 def average(flow_average): #funkce pocitajici aritmeticky prumer
     prumer = sum(flow_average)/len(flow_average)
@@ -34,14 +36,14 @@ def calc_average_flow(): #funkce vypočítá průměrný průtok za sedmidenní 
                     flow_average.append(o)
             except IndexError:
                 pass
-            print(flow_average)
             y = average(flow_average)
             list_average_flow.append(y)
         return list_average_flow
 def get_list(load_list,col_num): #funkce uklada do listu
-    for col in reader:
-        load_list.append(col[col_num])
+    for i in range(pocet_radku):
+        load_list.append(eve_list[i][col_num])
     return load_list
+
 def print_max():
     max_value = max(flow)
     min_value = min(flow)
@@ -52,14 +54,19 @@ def print_max():
 
 with open("test_data.csv", encoding = "UTF-8") as csvinfile:
     reader = csv.reader(csvinfile, delimiter = ",")
-    flow = get_list(flow,5)
-    database_num = get_list(database_num,0)
-    get_list(data_type,1)
-    get_list(year,2)
-    get_list(month,3)
-    get_list(day,4)
-    flow = list(map(str.strip,flow)) #prepise na hodnoty bez mezer !NENI MOZNA POTREBA!
-    flow = list(map(float, flow)) #prevede na float
+    for row in reader:
+        eve_list.append(row)
+        pocet_radku += 1
+
+flow = get_list(flow,5)
+database_num = get_list(database_num,0)
+data_type = get_list(data_type,1)
+year = get_list(year,2)
+month = get_list(month,3)
+day = get_list(day,4)
+flow = list(map(str.strip,flow)) #prepise na hodnoty bez mezer !NENI MOZNA POTREBA!
+flow = list(map(float, flow)) #prevede na float
+
 print(database_num)
 print(data_type)
 print(year)
@@ -68,5 +75,6 @@ print(day)
 print(flow)
 calc_average_flow()
 print(list_average_flow)
+print_max()
 
 
